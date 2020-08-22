@@ -4,14 +4,18 @@ public class Parralax : MonoBehaviour
 {
     #region Serialzed Fields
     [SerializeField] private Vector2 parallaxEffectMultiplier = default;
+
     [SerializeField] private bool infiniteHorizontal = default;
     [SerializeField] private bool infiniteVertical = default;
     #endregion
 
     #region Private Fields
     private Transform cameraTransform;
+
     private Vector3 lastCameraPosition;
+
     private Sprite sprite;
+
     private Texture2D texture;
 
     private float textureUnitSizeX;
@@ -27,6 +31,7 @@ public class Parralax : MonoBehaviour
         textureUnitSizeX = texture.width / sprite.pixelsPerUnit;
         textureUnitSizeY = texture.height / sprite.pixelsPerUnit;
     }
+
     private void LateUpdate()
     {
         Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;

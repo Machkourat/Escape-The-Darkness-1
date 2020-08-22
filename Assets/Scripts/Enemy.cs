@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
+
     public AnimationState animationState;
 
     private IEnemyState currentState;
@@ -17,17 +18,15 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(new IdleState());
-        Anim = GetComponent<Animator>();
+        ChangeState(new IdleState());       
         facingRight = true;
         movementSpeed = 5;
+        Anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         currentState.Execute();
-
-        //AnimationState();
         SetAnimation();
     }
 
@@ -49,21 +48,24 @@ public class Enemy : MonoBehaviour
 
     public void Move()
     {
-        //animationState = AnimationState.RUN;
         transform.Translate(GetDirection() * (movementSpeed * Time.deltaTime));
     }
 
     public Vector2 GetDirection()
     {
-        return facingRight ? Vector2.right : Vector2.left;
+        return facingRight ? Vector2.right : Vector2.left;//Short hand version of code written below
 
         //if (facingRight == true)
         //{
-        //    return Vector2.right;
+        //    return Vector2(1, 0);
         //}
         //else if (facingRight == false)
         //{
-        //    return Vector2.left;
+        //    return Vector2(-1, 0);
+        //}
+        //else
+        //{
+        //    return null;
         //}
     }
 }

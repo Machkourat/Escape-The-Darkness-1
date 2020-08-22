@@ -7,7 +7,9 @@ public class CameraShake : MonoBehaviour
 
     #region Private Fields
     private CinemachineVirtualCamera cinemachineVirtualCamera;
+
     private float shakeTimer;
+
     private float startingIntesity;
     private float shakeTimeTotal;
     #endregion
