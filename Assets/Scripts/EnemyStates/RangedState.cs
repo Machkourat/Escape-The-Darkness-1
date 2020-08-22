@@ -19,7 +19,7 @@ public class RangedState : IEnemyState
         
     }
 
-    public void OntriggerEnter(Collider2D collision)
+    public void OntriggerEnter(Collider2D _collision)
     {
         
     }

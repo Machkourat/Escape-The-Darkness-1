@@ -8,5 +8,5 @@ public interface IEnemyState
 
     void Exit();
 
-    void OntriggerEnter(Collider2D collision);
+    void OntriggerEnter(Collider2D _collision);
 }

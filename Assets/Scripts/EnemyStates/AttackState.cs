@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : MonoBehaviour
+public class AttackState : IEnemyState
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Enter(Enemy _enemy)
+    {
+       
+    }
+
+    public void Execute()
+    {
+       
+    }
+
+    public void Exit()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OntriggerEnter(Collider2D _collision)
     {
         
     }
