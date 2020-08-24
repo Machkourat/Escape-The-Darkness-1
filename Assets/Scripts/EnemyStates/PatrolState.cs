@@ -18,7 +18,12 @@ public class PatrolState : IEnemyState
     public void Execute()
     {
         Patrol();
-        enemy.Move();
+        enemy. Move();
+
+        if (enemy.Target != null)
+        {
+            enemy.ChangeState(new RangedState());
+        }
     }
 
     public void Exit()
@@ -28,7 +33,10 @@ public class PatrolState : IEnemyState
 
     public void OntriggerEnter(Collider2D _collision)
     {
-        
+        if (_collision.tag == "Edge")
+        {
+            enemy.ChangeDirection();
+        }
     }
 
     private void Patrol()

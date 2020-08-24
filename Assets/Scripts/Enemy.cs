@@ -6,19 +6,26 @@ public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
 
+    [SerializeField] private Transform wayPointLeft = default;
+    [SerializeField] private Transform wayPointRight = default;
+
     public AnimationState animationState;
 
     private IEnemyState currentState;
-
+    private Rigidbody2D rb;
+    private SpriteRenderer sr;
     private bool facingRight;
-
     private int movementSpeed;
+
+    public GameObject Target { get; set; }
 
     public Animator Anim { get; private set; }
 
     private void Start()
     {
-        ChangeState(new IdleState());       
+        ChangeState(new IdleState());
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
         facingRight = true;
         movementSpeed = 5;
         Anim = GetComponent<Animator>();
@@ -27,7 +34,21 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         currentState.Execute();
+        LookAtTarget();
         SetAnimation();
+    }
+
+    private void LookAtTarget()
+    {
+        if (Target != null)
+        {
+            float xDir = Target.transform.position.x - transform.position.x;
+
+            if (xDir < 0 && facingRight || xDir > 0 && !facingRight)
+            {
+                ChangeDirection();
+            }
+        }
     }
 
     public void SetAnimation()
@@ -53,19 +74,17 @@ public class Enemy : MonoBehaviour
 
     public Vector2 GetDirection()
     {
-        return facingRight ? Vector2.right : Vector2.left;//Short hand version of code written below
+        return facingRight ? Vector2.right : Vector2.left;
+    }
 
-        //if (facingRight == true)
-        //{
-        //    return Vector2(1, 0);
-        //}
-        //else if (facingRight == false)
-        //{
-        //    return Vector2(-1, 0);
-        //}
-        //else
-        //{
-        //    return null;
-        //}
+    public void ChangeDirection()
+    {
+        facingRight = !facingRight;
+        transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        currentState.OntriggerEnter(collision);
     }
 }
