@@ -6,6 +6,11 @@ public class Ladder : MonoBehaviour
 
     [SerializeField] LadderParts part = LadderParts.MIDDLE;
 
+    [SerializeField] private Collider2D coll = default;
+
+    [SerializeField] private LayerMask whatIsTop = default;
+
+
     private void OnTriggerEnter2D(Collider2D _collision)
     {
         if (_collision.GetComponent<PlayerController>())
