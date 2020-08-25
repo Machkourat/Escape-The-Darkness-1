@@ -11,8 +11,8 @@ public class PatrolState : IEnemyState
 
     public void Enter(Enemy _enemy)
     {
+        patrolDuration = Random.Range(1, 10);
         this.enemy = _enemy;
-        patrolDuration = 10f;
     }
 
     public void Execute()
