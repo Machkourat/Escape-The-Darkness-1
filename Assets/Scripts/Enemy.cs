@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
 
     public Animator Anim { get; private set; }
 
+    public FieldOfView FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+
     private void Start()
     {
         ChangeState(new IdleState());
@@ -39,8 +41,8 @@ public class Enemy : MonoBehaviour
         LookAtTarget();
         SetAnimation();
 
-        fieldOfView.SetOrigin(transform.position);
-        fieldOfView.SetAimDirection(GetDirection());
+        FieldOfView.SetOrigin(transform.position);
+        FieldOfView.SetAimDirection(GetDirection());
     }
 
     private void LookAtTarget()
@@ -72,6 +74,15 @@ public class Enemy : MonoBehaviour
 
         currentState = _newState;
         currentState.Enter(this);
+
+        //if (animationState == 0)
+        //{
+            
+        //}
+        //if (animationState == 1)
+        //{
+
+        //}
     }
 
     public void Move()
