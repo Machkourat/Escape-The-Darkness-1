@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
 
+    
+
     [SerializeField] private Transform wayPointLeft = default;
     [SerializeField] private Transform wayPointRight = default;
 
@@ -46,6 +48,8 @@ public class Enemy : MonoBehaviour
 
             if (xDir < 0 && facingRight || xDir > 0 && !facingRight)
             {
+                
+
                 ChangeDirection();
             }
         }
