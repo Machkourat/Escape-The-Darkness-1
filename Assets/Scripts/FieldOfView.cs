@@ -75,6 +75,7 @@ public class FieldOfView : MonoBehaviour
         mesh.vertices = verticies;
         mesh.uv = uv;
         mesh.triangles = triangles;
+        mesh.bounds = new Bounds(origin, Vector3.one *1000f);
     }
 
     public void SetOrigin(Vector3 origin)

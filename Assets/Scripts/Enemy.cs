@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
 
-    
+    [SerializeField] private FieldOfView fieldOfView;
 
     [SerializeField] private Transform wayPointLeft = default;
     [SerializeField] private Transform wayPointRight = default;
@@ -38,6 +38,9 @@ public class Enemy : MonoBehaviour
         currentState.Execute();
         LookAtTarget();
         SetAnimation();
+
+        fieldOfView.SetOrigin(transform.position);
+        fieldOfView.SetAimDirection(GetDirection());
     }
 
     private void LookAtTarget()
