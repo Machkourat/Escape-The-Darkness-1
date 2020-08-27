@@ -47,6 +47,9 @@ TagManager:
   - name: Climbable
     uniqueID: 1484227463
     locked: 0
+  - name: Hideable Objects
+    uniqueID: 418848173
+    locked: 0
   - name: Player
     uniqueID: 4018720963
     locked: 0

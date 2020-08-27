@@ -125,8 +125,8 @@ public class PlayerController : MonoBehaviour
         if (canMove)
         {
             rb.velocity = new Vector2(runSpeed * horMovementDirection, rb.velocity.y);
-            fieldOfView.SetAimDirection(rb.velocity);
-            fieldOfView.SetOrigin(transform.position);
+            //fieldOfView.SetAimDirection(rb.velocity);
+            //fieldOfView.SetOrigin(transform.position);
         }
         else
         {
