@@ -25,7 +25,7 @@ TagManager:
   - Ladder
   - LadderTopCheck
   - Objects
-  - 
+  - SewerWall
   - 
   - 
   - 
@@ -44,12 +44,33 @@ TagManager:
   - name: Ground
     uniqueID: 3476480463
     locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: House
+    uniqueID: 2224696583
+    locked: 0
+  - name: SewerWall
+    uniqueID: 593610765
+    locked: 0
+  - name: ForeGround
+    uniqueID: 1380557515
+    locked: 0
+  - name: HouseLadder
+    uniqueID: 1462515483
+    locked: 0
+  - name: SewerLadder
+    uniqueID: 707486295
+    locked: 0
   - name: Climbable
     uniqueID: 1484227463
+    locked: 0
+  - name: Boxes
+    uniqueID: 4227588245
     locked: 0
   - name: Player
     uniqueID: 4018720963
     locked: 0
-  - name: Default
-    uniqueID: 0
+  - name: Bushes
+    uniqueID: 986982995
     locked: 0
