@@ -6,7 +6,12 @@ public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
 
-    [SerializeField] private FieldOfView fieldOfView;
+    //[SerializeField] private FieldOfView fieldOfView;
+
+    
+
+    
+
 
     [SerializeField] private Transform wayPointLeft = default;
     [SerializeField] private Transform wayPointRight = default;
@@ -19,11 +24,21 @@ public class Enemy : MonoBehaviour
     private bool facingRight;
     private int movementSpeed;
 
+    [SerializeField] private PlayerController player;
+    [SerializeField] private Transform prefabFieldOFView;
+    [SerializeField] private float fov = 40f;
+    [SerializeField] private float viewDistance = 15f;
+
+    //[SerilaizedField] private Vector3 aimDirection;
+    private FieldOfView fieldOfView;
+
+
+
     public GameObject Target { get; set; }
 
     public Animator Anim { get; private set; }
 
-    public FieldOfView FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+    //public FieldOfView FieldOfView { get => fieldOfView; set => fieldOfView = value; }
 
     private void Start()
     {
@@ -33,6 +48,11 @@ public class Enemy : MonoBehaviour
         facingRight = true;
         movementSpeed = 5;
         Anim = GetComponent<Animator>();
+
+        fieldOfView = Instantiate(prefabFieldOFView, null).GetComponent<FieldOfView>();
+        fieldOfView.SetFoV(fov);
+        fieldOfView.SetViewDistance(viewDistance);
+
     }
 
     private void Update()
@@ -41,8 +61,67 @@ public class Enemy : MonoBehaviour
         LookAtTarget();
         SetAnimation();
 
-        FieldOfView.SetOrigin(transform.position);
-        FieldOfView.SetAimDirection(GetDirection());
+        //FieldOfView.SetOrigin(transform.position);
+        //FieldOfView.SetAimDirection(GetDirection());
+        if (fieldOfView != null)
+        {
+            fieldOfView.SetOrigin(transform.position);
+            fieldOfView.SetAimDirection(GetDirection());
+        }
+        
+        Debug.DrawLine(transform.position, transform.position + GetDirection() * 10f);
+
+        FindTargetPlayer();
+    }
+
+    private void FindTargetPlayer()
+    {
+        if (Vector3.Distance(GetPosition(), player.GetPosition()) < viewDistance)
+        {
+            // Player inside ViewDistance
+            Debug.Log("Attack1");
+
+            Vector3 dirToPlayer = (player.GetPosition() - GetPosition()).normalized;
+
+            if (Vector3.Angle(GetDirection(), dirToPlayer) < fov / 2f)
+            {
+                Debug.Log("Attack2");
+            }
+                // Use aimDirection for 360 degree. 
+            //{
+            //    Debug.Log("Attack2");
+
+                //    //Player inside FieldofView
+                //    RaycastHit2D raycastHit2D = Physics2D.Raycast(GetPosition(), dirToPlayer, viewDistance);
+
+                //    if (raycastHit2D.collider != null)
+                //    {
+                //        Debug.Log("Attack1");
+
+                //        //Player hit something
+                //        if (raycastHit2D.collider.GetComponent<PlayerController>() != null)
+                //        {
+                //            Debug.Log("Hit");
+
+                //            //Hit Player
+                //            movementSpeed = movementSpeed * 2;
+                //            ChangeState(new RangedState());
+
+                //        }
+                //        else
+                //        {
+                //            Debug.Log("NoAttack");
+
+                //            //Hit Something Else
+                //        }
+                //    }
+                //}            
+        }
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
     private void LookAtTarget()
@@ -90,9 +169,9 @@ public class Enemy : MonoBehaviour
         transform.Translate(GetDirection() * (movementSpeed * Time.deltaTime));
     }
 
-    public Vector2 GetDirection()
+    public Vector3 GetDirection()
     {
-        return facingRight ? Vector2.right : Vector2.left;
+        return facingRight ? Vector3.right : Vector3.left;
     }
 
     public void ChangeDirection()
@@ -105,4 +184,6 @@ public class Enemy : MonoBehaviour
     {
         currentState.OntriggerEnter(collision);
     }
+
+    
 }

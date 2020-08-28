@@ -9,12 +9,12 @@ public class PlayerController : MonoBehaviour
     public State state;
     #endregion
 
-    [SerializeField] private FieldOfView fieldOfView;
+    //[SerializeField] private FieldOfView fieldOfView;
 
     #region Components
     private Rigidbody2D rb;
     private Animator anim;
-    private Collider2D coll;
+    public Collider2D coll;
     private SpriteRenderer sr;
     private Transform tf;
     #endregion
@@ -369,6 +369,11 @@ public class PlayerController : MonoBehaviour
             anim.speed = 0f;
             rb.velocity = Vector2.zero;
         }
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
     #region Animation Events
