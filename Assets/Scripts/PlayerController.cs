@@ -208,6 +208,10 @@ public class PlayerController : MonoBehaviour
             checkJumpMultiplier = false;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeightMultiplier);
         }
+        if (Input.GetButton("Crouch"))
+        {
+            state = State.CROUCH;
+        }
         //if (Input.GetButtonDown("Dash"))
         //{
         //    if (Time.time >= (lastDash + dashCoolDown))
@@ -265,6 +269,13 @@ public class PlayerController : MonoBehaviour
         {
             Climb();
         }
+
+
+        //else if (state == State.CROUCH)
+        //{
+        //    state == State.CROUCH;
+        //}
+
         else if (state == State.JUMP)
         {
             if (rb.velocity.y < Mathf.Epsilon)

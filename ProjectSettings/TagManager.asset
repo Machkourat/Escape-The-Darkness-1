@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Edge
   - LadderTop
+  - Chest
+  - Missile
   layers:
   - Default
   - TransparentFX
@@ -46,6 +48,9 @@ TagManager:
     locked: 0
   - name: Climbable
     uniqueID: 1484227463
+    locked: 0
+  - name: Hideable
+    uniqueID: 3852204383
     locked: 0
   - name: Player
     uniqueID: 4018720963
