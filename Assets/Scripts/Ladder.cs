@@ -4,12 +4,11 @@ public class Ladder : MonoBehaviour
 {
     private enum LadderParts { TOP, MIDDLE, BOTTOM };
 
+    #region Serialzied Fields
     [SerializeField] LadderParts part = LadderParts.MIDDLE;
-
     [SerializeField] private Collider2D coll = default;
-
     [SerializeField] private LayerMask whatIsTop = default;
-
+    #endregion
 
     private void OnTriggerEnter2D(Collider2D _collision)
     {

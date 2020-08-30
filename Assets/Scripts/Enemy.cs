@@ -6,15 +6,8 @@ public class Enemy : MonoBehaviour
 {
     public enum AnimationState { IDLE, RUN, JUMP, FALL, HURT, CROUCH }
 
-    //[SerializeField] private FieldOfView fieldOfView;
-
-    
-
-    
-
-
-    [SerializeField] private Transform wayPointLeft = default;
-    [SerializeField] private Transform wayPointRight = default;
+    //[SerializeField] private Transform wayPointLeft = default;
+    //[SerializeField] private Transform wayPointRight = default;
 
     public AnimationState animationState;
 
@@ -25,20 +18,23 @@ public class Enemy : MonoBehaviour
     private int movementSpeed;
 
     [SerializeField] private PlayerController player;
-    [SerializeField] private Transform prefabFieldOFView;
-    [SerializeField] private float fov = 40f;
-    [SerializeField] private float viewDistance = 15f;
+    //[SerializeField] private Transform prefabFieldOFView;
+    //[SerializeField] private float fov = 40f;
+    //[SerializeField] private float viewDistance = 15f;
 
     //[SerilaizedField] private Vector3 aimDirection;
-    private FieldOfView fieldOfView;
+    [SerializeField]private FieldOfView fieldOfView;
 
+    [SerializeField] Transform rayCastPoistion;
 
+    [SerializeField] private LayerMask target;
 
     public GameObject Target { get; set; }
 
     public Animator Anim { get; private set; }
 
-    //public FieldOfView FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+    public FieldOfView FieldOfView { get => fieldOfView; set => fieldOfView = value; }
+    //public Transform PrefabFieldOFView { get => prefabFieldOFView; set => prefabFieldOFView = value; }
 
     private void Start()
     {
@@ -49,10 +45,11 @@ public class Enemy : MonoBehaviour
         movementSpeed = 5;
         Anim = GetComponent<Animator>();
 
-        fieldOfView = Instantiate(prefabFieldOFView, null).GetComponent<FieldOfView>();
-        fieldOfView.SetFoV(fov);
-        fieldOfView.SetViewDistance(viewDistance);
+        //fieldOfView = Instantiate(PrefabFieldOFView, null).GetComponent<FieldOfView>();
+        //fieldOfView.SetFoV(fov);
+        //fieldOfView.SetViewDistance(viewDistance);
 
+        Physics2D.queriesStartInColliders = false;
     }
 
     private void Update()
@@ -61,14 +58,15 @@ public class Enemy : MonoBehaviour
         LookAtTarget();
         SetAnimation();
 
-        //FieldOfView.SetOrigin(transform.position);
-        //FieldOfView.SetAimDirection(GetDirection());
         if (fieldOfView != null)
         {
-            fieldOfView.SetOrigin(transform.position);
-            fieldOfView.SetAimDirection(GetDirection());
+            //fieldOfView.SetOrigin(transform.position);
+            //fieldOfView.SetAimDirection(GetDirection());
+
+            FieldOfView.SetOrigin(transform.position);
+            FieldOfView.SetAimDirection(GetDirection());
         }
-        
+
         Debug.DrawLine(transform.position, transform.position + GetDirection() * 10f);
 
         FindTargetPlayer();
@@ -76,46 +74,35 @@ public class Enemy : MonoBehaviour
 
     private void FindTargetPlayer()
     {
-        if (Vector3.Distance(GetPosition(), player.GetPosition()) < viewDistance)
+        if (Vector3.Distance(GetPosition(), player.GetPosition()) < FieldOfView.viewDistance)
         {
             // Player inside ViewDistance
             Debug.Log("Attack1");
 
             Vector3 dirToPlayer = (player.GetPosition() - GetPosition()).normalized;
 
-            if (Vector3.Angle(GetDirection(), dirToPlayer) < fov / 2f)
+            if (Vector3.Angle(GetDirection(), dirToPlayer) < FieldOfView.fov / 2f)// 
             {
+                //Player inside FieldOfView
                 Debug.Log("Attack2");
-            }
-                // Use aimDirection for 360 degree. 
-            //{
-            //    Debug.Log("Attack2");
 
-                //    //Player inside FieldofView
-                //    RaycastHit2D raycastHit2D = Physics2D.Raycast(GetPosition(), dirToPlayer, viewDistance);
+                RaycastHit2D raycastHit2D = Physics2D.Raycast(rayCastPoistion.position, dirToPlayer, FieldOfView.viewDistance);
 
-                //    if (raycastHit2D.collider != null)
-                //    {
-                //        Debug.Log("Attack1");
-
-                //        //Player hit something
-                //        if (raycastHit2D.collider.GetComponent<PlayerController>() != null)
-                //        {
-                //            Debug.Log("Hit");
-
-                //            //Hit Player
-                //            movementSpeed = movementSpeed * 2;
-                //            ChangeState(new RangedState());
-
-                //        }
-                //        else
-                //        {
-                //            Debug.Log("NoAttack");
-
-                //            //Hit Something Else
-                //        }
-                //    }
-                //}            
+                if (raycastHit2D.collider != null)
+                {
+                    Debug.DrawLine(rayCastPoistion.position, raycastHit2D.point, Color.red);
+                    if (raycastHit2D.collider.CompareTag("Player"))
+                    {
+                        Debug.Log("Hit");
+                        Destroy(raycastHit2D.collider.gameObject);
+                    }
+                }
+                else
+                {
+                    Debug.DrawLine(transform.position, transform.position + GetDirection() * FieldOfView.viewDistance, Color.green);
+                    Debug.Log("NoAttack");
+                }
+            }                     
         }
     }
 
@@ -132,8 +119,6 @@ public class Enemy : MonoBehaviour
 
             if (xDir < 0 && facingRight || xDir > 0 && !facingRight)
             {
-                
-
                 ChangeDirection();
             }
         }
@@ -183,7 +168,5 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         currentState.OntriggerEnter(collision);
-    }
-
-    
+    }   
 }

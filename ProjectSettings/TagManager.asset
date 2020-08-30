@@ -38,8 +38,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Targets
+  - Obstacles
   m_SortingLayers:
   - name: Ground
     uniqueID: 3476480463
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 4018720963
+    locked: 0
+  - name: Enemy
+    uniqueID: 3545550943
     locked: 0
   - name: Default
     uniqueID: 0

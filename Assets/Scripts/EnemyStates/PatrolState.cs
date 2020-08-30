@@ -14,8 +14,8 @@ public class PatrolState : IEnemyState
         patrolDuration = Random.Range(1, 10);
         this.enemy = _enemy;
 
-        //enemy.FieldOfView.SetFoV(40f);
-        //enemy.FieldOfView.SetViewDistance(15f);
+        enemy.FieldOfView.SetFoV(40f);
+        enemy.FieldOfView.SetViewDistance(15f);
     }
 
     public void Execute()
