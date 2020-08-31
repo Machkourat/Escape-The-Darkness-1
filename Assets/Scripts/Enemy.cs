@@ -15,7 +15,14 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool facingRight;
-    private int movementSpeed;
+    public int movementSpeed;
+
+    public bool isFound;
+    public bool isInRange;
+
+    public Vector2 startPosition;
+
+    public Collider2D coll;
 
     [SerializeField] private PlayerController player;
     //[SerializeField] private Transform prefabFieldOFView;
@@ -42,12 +49,17 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         facingRight = true;
-        movementSpeed = 5;
+        movementSpeed = 3;
         Anim = GetComponent<Animator>();
 
         //fieldOfView = Instantiate(PrefabFieldOFView, null).GetComponent<FieldOfView>();
         //fieldOfView.SetFoV(fov);
         //fieldOfView.SetViewDistance(viewDistance);
+
+        isFound = false;
+        coll.enabled = false;
+
+        startPosition = transform.position;
 
         Physics2D.queriesStartInColliders = false;
     }
@@ -70,6 +82,17 @@ public class Enemy : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + GetDirection() * 10f);
 
         FindTargetPlayer();
+
+        if (isFound)
+        {
+            coll.enabled = true;
+            ChangeState(new RangedState());
+        }
+        if (!isFound)
+        {
+            coll.enabled = false;
+            //ChangeState(new IdleState());
+        }
     }
 
     private void FindTargetPlayer()
@@ -93,8 +116,10 @@ public class Enemy : MonoBehaviour
                     Debug.DrawLine(rayCastPoistion.position, raycastHit2D.point, Color.red);
                     if (raycastHit2D.collider.CompareTag("Player"))
                     {
-                        Debug.Log("Hit");
-                        Destroy(raycastHit2D.collider.gameObject);
+                        Debug.Log("RayHitPlayer");
+                        //Destroy(raycastHit2D.collider.gameObject);
+                        //movementSpeed = movementSpeed * 2;
+                        isFound = true;
                     }
                 }
                 else
@@ -168,5 +193,18 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         currentState.OntriggerEnter(collision);
-    }   
+
+        //if (collision.CompareTag("Player"))
+        //{
+        //    isInRange = true;
+        //}
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //if (collision.CompareTag("Player")) 
+        //{
+        //    isInRange = false;
+        //}
+    }
 }

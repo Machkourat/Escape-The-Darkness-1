@@ -11,11 +11,14 @@ public class IdleState : IEnemyState
 
     public void Enter(Enemy _enemy)
     {
+        
         idleDuration = Random.Range(1, 10);
         this.enemy = _enemy;
 
         enemy.FieldOfView.SetFoV(60f);
         enemy.FieldOfView.SetViewDistance(8f);
+
+        enemy.movementSpeed = 3;
     }
 
     public void Execute()

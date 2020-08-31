@@ -19,6 +19,7 @@ public class EnemySight : MonoBehaviour
         if (collision.tag == "Player")
         {
             enemy.Target = null;
+            enemy.isFound = false;
         }
     }
 }

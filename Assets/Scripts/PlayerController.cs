@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,14 +28,18 @@ public class PlayerController : MonoBehaviour
 
     #region Ladder Fields
     [SerializeField] private float climbSpeed = 3f;
-    [SerializeField] private PlatformEffector2D pe = default;
+    //[SerializeField] private PlatformEffector2D pe = default;
     [SerializeField] private LayerMask whatIsLadderTop = default;
 
     private bool isOnLadder = false;
     private float naturalGravity;
 
+    //private Ladder ladder = GetComponent<Ladder>();
+
     //Encapsulated Fields
     private Ladder ladder;
+    //public Ladder ladder;
+
     private bool canClimb = false;
     private bool bottomLadder = false;
     private bool topLadder = false;
@@ -104,6 +109,8 @@ public class PlayerController : MonoBehaviour
         c = sr.material.color;
         state = State.IDLE;
         amountOfJumpsLeft = amountOfJumps;
+
+        //ladder = GetComponent<Ladder>();
     }
 
     private void Update()
@@ -186,7 +193,7 @@ public class PlayerController : MonoBehaviour
         {
             state = State.CLIMB;
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-            transform.position = new Vector3(Ladder.transform.position.x, rb.position.y);
+            transform.position = new Vector3(Ladder.transform.position.x, rb.position.y);//Ladder
             rb.gravityScale = 0f;
         }
         if (Input.GetButtonDown("Jump") && !isOnLadder)
@@ -336,26 +343,34 @@ public class PlayerController : MonoBehaviour
 
     private void Climb()
     {
+        
+
         isOnLadder = true;
         verMovementDirection = Input.GetAxis("Vertical");
         //Climbing up
         if (verMovementDirection > 0.1f && !TopLadder)
         {
-            pe.rotationalOffset = 0f;
+            //pe.rotationalOffset = 0f; 
+            ladder.PESwitcherOff();
+
             rb.velocity = new Vector2(0f, verMovementDirection * climbSpeed);
             anim.speed = 1f;
         }
         //Climbing down
         else if (verMovementDirection < -0.1f && !BottomLadder)
         {
-            pe.rotationalOffset = 180f;
+            //pe.rotationalOffset = 180f;
+            ladder.PESwitcherOn();
+
             rb.velocity = new Vector2(0f, verMovementDirection * climbSpeed);
             anim.speed = 1f;
         }
         //Reach bottom or top of ladder
         else if (BottomLadder || TopLadder)
         {
-            pe.rotationalOffset = 0f;
+            //pe.rotationalOffset = 0f;
+            ladder.PESwitcherOff();
+
             state = State.IDLE;
             isOnLadder = false;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -379,6 +394,22 @@ public class PlayerController : MonoBehaviour
         {
             anim.speed = 0f;
             rb.velocity = Vector2.zero;
+        }
+    }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Enemy"))
+    //    {
+    //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //    }
+    //}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
