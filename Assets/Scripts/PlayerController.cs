@@ -89,6 +89,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject hitParticle = default;
     [SerializeField] private Transform spawnPoint = default;
     [SerializeField] private GameObject deathEffect = default;
+
+    [SerializeField] private ParticleSystem death = default;
     #endregion
 
     #region Getter_Setters
@@ -409,8 +411,20 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            StartCoroutine(ShakeTimer());
+            
         }
+    }
+
+    private IEnumerator ShakeTimer()
+    {
+        death.Play();
+        sr.enabled = false;
+        CameraShake.Instance.ShakeCamera(5f, 0.1f);
+        
+        yield return new WaitForSeconds(1.3f);
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public Vector3 GetPosition()

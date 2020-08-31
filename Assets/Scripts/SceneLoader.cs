@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
@@ -9,7 +10,7 @@ public class SceneLoader : MonoBehaviour
     {
         if (_collision.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene(sceneName);
+            
         }
-    }
+    }   
 }
